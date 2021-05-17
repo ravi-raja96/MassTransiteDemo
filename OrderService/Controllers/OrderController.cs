@@ -7,82 +7,95 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Model;
 using OrderService.Context;
+using OrderService.Dto.Request;
 using OrderService.Entity;
+using OrderService.Repositories;
+using OrderService.Repositories.Specification;
 
 namespace OrderService.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class OrderController : ControllerBase
-    {
-        private readonly OrderServiceDbContext _orderServiceDbContext;
-        private readonly IPublishEndpoint _publishEndpoint;
-        public OrderController(IPublishEndpoint publishEndpoint, OrderServiceDbContext orderServiceDbContext)
-        {
-            _publishEndpoint = publishEndpoint;
-            _orderServiceDbContext = orderServiceDbContext;
-        }
-        // GET: api/Order
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+	[Route("api/[controller]")]
+	[ApiController]
+	public class OrderController : ControllerBase
+	{
+		private readonly IPublishEndpoint _publishEndpoint;
+		private readonly IBaseRepository<Order> _orderRepository;
+		public OrderController(IPublishEndpoint publishEndpoint, IBaseRepository<Order> orderRepository)
+		{
+			_publishEndpoint = publishEndpoint;
+			_orderRepository = orderRepository;
+		}
 
-        // GET: api/Order/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+		// GET: api/Order
+		[HttpGet]
+		public IActionResult Get()
+		{
+			var upcomingShipmentsSpecification = new UpcomingOrderShipmentSpecification();
 
-        // POST: api/Order
-        [HttpPost]
-        public async Task<IActionResult> Post(string order)
-        {
-            var Order = new Order();
-            Order.Name = order;
-            await _orderServiceDbContext.Orders.AddAsync(Order);
-            //await _publishEndpoint.Publish<Model.Order>(order);
-            await _orderServiceDbContext.SaveChangesAsync();
-            var NewOrder = new AddOrder();
-            NewOrder.Name = order;
-            await _publishEndpoint.Publish(NewOrder);
-            return Ok();
-        }
+			var orders = _orderRepository.FindWithSpecificationPattern(upcomingShipmentsSpecification);
 
-        // PUT: api/Order/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, string value)
-        {
-            var Data = _orderServiceDbContext.Orders.FirstOrDefault(x => x.Id == id);
-            if (Data == null)
-            {
-                return Ok("Data does't exisits");
-            }
-           Data.Name = value;
-             _orderServiceDbContext.Orders.Update(Data);
-            await _orderServiceDbContext.SaveChangesAsync();
-            var updateOrder = new UpdateOrder();
-            updateOrder.Name = value;
-            updateOrder.Id = id;
-            
-            await _publishEndpoint.Publish(updateOrder);
-            return Ok(); 
+			return Ok(orders);
+		}
 
-        }
+		// GET: api/Order/5
+		[HttpGet("{id}", Name = "Get")]
+		public async Task<IActionResult> Get(int id)
+		{
+			var order = await _orderRepository.GetById(id);
+			return Ok(order);
+		}
 
-        // DELETE: api/Order/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var Data = _orderServiceDbContext.Orders.FirstOrDefault(x => x.Id == id);
-             _orderServiceDbContext.Orders.Remove(Data);
-           await _orderServiceDbContext.SaveChangesAsync();
-            var DeleteOrder = new DeleteOrder();
-            DeleteOrder.Id = Data.Id;
-            await _publishEndpoint.Publish(DeleteOrder);
-            return Ok();
-        }
-    }
+		// POST: api/Order
+		[HttpPost]
+		public async Task<IActionResult> Post(OrderRequest orderRequest)
+		{
+			var Order = new Order
+			{
+				Name = orderRequest.Name,
+				ShipmentDate = orderRequest.ShipmentDate
+			};
+
+			await _orderRepository.AddAsync(Order);
+
+			//await _publishEndpoint.Publish<Model.Order>(order);
+			//var NewOrder = new AddOrder();
+			//NewOrder.Name = order;
+			//await _publishEndpoint.Publish(NewOrder);
+			return Ok();
+		}
+
+		// PUT: api/Order/5
+		[HttpPut("{id}")]
+		public async Task<IActionResult> Put(int id, OrderRequest orderRequest)
+		{
+			var order = await _orderRepository.GetById(id);
+			if (order == null)
+			{
+				return NotFound($"Order doesn't exist for Id: {id}");
+			}
+
+			order.Name = orderRequest.Name;
+			order.ShipmentDate = orderRequest.ShipmentDate;
+			await _orderRepository.UpdateAsync(order);
+
+			//var updateOrder = new UpdateOrder();
+			//updateOrder.Name = value;
+			//updateOrder.Id = id;
+
+			//await _publishEndpoint.Publish(updateOrder);
+			return Ok();
+
+		}
+
+		// DELETE: api/Order/5
+		[HttpDelete("{id}")]
+		public async Task<IActionResult> Delete(int id)
+		{
+			await _orderRepository.DeleteAsync(id);
+			//var DeleteOrder = new DeleteOrder();
+			//DeleteOrder.Id = Data.Id;
+			//await _publishEndpoint.Publish(DeleteOrder);
+			return Ok();
+		}
+	}
 }

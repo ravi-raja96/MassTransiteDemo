@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using MassTransit;
 using Model;
 
-namespace InventoryService
+namespace InventoryService.Comsumers
 {
     public class MultiplicationConsumer : IConsumer<MultiplyNumber>
     {

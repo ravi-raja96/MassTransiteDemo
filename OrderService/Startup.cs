@@ -17,6 +17,7 @@ using Microsoft.OpenApi.Models;
 using Model;
 using OrderService.Config;
 using OrderService.Context;
+using OrderService.Repositories;
 
 namespace OrderService
 {
@@ -38,6 +39,9 @@ namespace OrderService
                 .GetSection("PostgresConfig").Get<PostgresConfig>();
             var connectString = postgresConfig.ConnectionString;
             services.AddDbContext<OrderServiceDbContext>(x => x.UseNpgsql(connectString));
+
+            services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

@@ -32,6 +32,5 @@
     <Folder Include="Config\" />
     <Folder Include="Context\" />
     <Folder Include="Entity\" />
-    <Folder Include="Migrations\" />
   </ItemGroup>
 </Project>

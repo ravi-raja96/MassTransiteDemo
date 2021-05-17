@@ -1,5 +1,5 @@
 ﻿using System;
-using InventoryService.Entite;
+using InventoryService.Entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace InventoryService.Context

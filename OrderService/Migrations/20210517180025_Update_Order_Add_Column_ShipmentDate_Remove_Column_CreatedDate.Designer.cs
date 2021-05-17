@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using OrderService.Context;
@@ -9,9 +10,10 @@ using OrderService.Context;
 namespace OrderService.Migrations
 {
     [DbContext(typeof(OrderServiceDbContext))]
-    partial class OrderServiceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210517180025_Update_Order_Add_Column_ShipmentDate_Remove_Column_CreatedDate")]
+    partial class Update_Order_Add_Column_ShipmentDate_Remove_Column_CreatedDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

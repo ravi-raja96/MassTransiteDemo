@@ -30,6 +30,6 @@
   <ItemGroup>
     <Folder Include="Config\" />
     <Folder Include="Context\" />
-    <Folder Include="Entite\" />
+    <Folder Include="Entity\" />
   </ItemGroup>
 </Project>

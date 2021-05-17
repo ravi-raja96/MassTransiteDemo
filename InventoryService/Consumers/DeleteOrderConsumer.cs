@@ -5,7 +5,7 @@ using InventoryService.Context;
 using MassTransit;
 using Model;
 
-namespace InventoryService
+namespace InventoryService.Comsumers
 {
     public class DeleteOrderConsumer : IConsumer<DeleteOrder>
     {

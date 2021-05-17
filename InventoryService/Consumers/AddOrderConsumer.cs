@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 using InventoryService.Context;
-using InventoryService.Entite;
+using InventoryService.Entity;
 using MassTransit;
 using MassTransit.Riders;
 using Model;
 
-namespace InventoryService
+namespace InventoryService.Comsumers
 {
     public class AddOrderConsumer : IConsumer<AddOrder>
     {

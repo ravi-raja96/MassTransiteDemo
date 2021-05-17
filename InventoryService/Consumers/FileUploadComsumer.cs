@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using MassTransit;
 using Model;
 
-namespace InventoryService
+namespace InventoryService.Comsumers
 {
     public class FileUploadComsumer : IConsumer<FileUpload>
     {

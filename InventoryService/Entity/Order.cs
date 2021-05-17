@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace InventoryService.Entite
+namespace InventoryService.Entity
 {
     public class Order
     {

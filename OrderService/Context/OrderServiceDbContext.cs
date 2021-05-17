@@ -10,5 +10,9 @@ namespace OrderService.Context
         public OrderServiceDbContext(DbContextOptions<OrderServiceDbContext> options) : base(options)
         {
         }
-    }
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+		}
+	}
 }

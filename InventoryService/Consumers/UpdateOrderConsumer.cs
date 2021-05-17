@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Threading.Tasks;
 using InventoryService.Context;
-using InventoryService.Entite;
+using InventoryService.Entity;
 using MassTransit;
 using Model;
 
-namespace InventoryService
+namespace InventoryService.Comsumers
 {
     public class UpdateOrderConsumer : IConsumer<UpdateOrder>
     {

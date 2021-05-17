@@ -1,4 +1,5 @@
 ﻿using System;
+using InventoryService.Comsumers;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 
