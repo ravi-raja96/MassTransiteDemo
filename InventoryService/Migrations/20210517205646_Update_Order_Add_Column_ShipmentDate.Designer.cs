@@ -3,15 +3,17 @@ using System;
 using InventoryService.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace InventoryService.Migrations
 {
     [DbContext(typeof(InventoryServiceDbContext))]
-    partial class InventoryServiceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210517205646_Update_Order_Add_Column_ShipmentDate")]
+    partial class Update_Order_Add_Column_ShipmentDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

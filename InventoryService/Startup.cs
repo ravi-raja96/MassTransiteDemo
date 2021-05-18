@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using InventoryService.Config;
 using InventoryService.Context;
+using InventoryService.Repositories;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,9 @@ namespace InventoryService
             var connectString = postgresConfig.ConnectionString;
             services.AddDbContext<InventoryServiceDbContext>(x => x.UseNpgsql(connectString));
             services.AddControllers();
+
+            services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "InventoryService", Version = "v1" });

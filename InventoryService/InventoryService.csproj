@@ -23,13 +23,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\MassTransitDemo\Orders\Model.csproj">
-      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Config\" />
     <Folder Include="Context\" />
     <Folder Include="Entity\" />
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Orders\Model.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
 </Project>

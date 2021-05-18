@@ -57,11 +57,12 @@ namespace OrderService.Controllers
 
 			await _orderRepository.AddAsync(Order);
 
-			//await _publishEndpoint.Publish<Model.Order>(order);
-			//var NewOrder = new AddOrder();
-			//NewOrder.Name = order;
-			//await _publishEndpoint.Publish(NewOrder);
-			return Ok();
+            //await _publishEndpoint.Publish<Model.Order>(order);
+            var NewOrder = new AddOrder();
+            NewOrder.Name = orderRequest.Name;
+			NewOrder.ShipmentDate = orderRequest.ShipmentDate;
+            await _publishEndpoint.Publish(NewOrder);
+            return Ok();
 		}
 
 		// PUT: api/Order/5
@@ -78,12 +79,12 @@ namespace OrderService.Controllers
 			order.ShipmentDate = orderRequest.ShipmentDate;
 			await _orderRepository.UpdateAsync(order);
 
-			//var updateOrder = new UpdateOrder();
-			//updateOrder.Name = value;
-			//updateOrder.Id = id;
+            var updateOrder = new UpdateOrder();
+            updateOrder.Name = orderRequest.Name;
+            updateOrder.Id = id;
 
-			//await _publishEndpoint.Publish(updateOrder);
-			return Ok();
+            await _publishEndpoint.Publish(updateOrder);
+            return Ok();
 
 		}
 
