@@ -57,7 +57,6 @@ namespace OrderService.Controllers
 
 			await _orderRepository.AddAsync(Order);
 
-            //await _publishEndpoint.Publish<Model.Order>(order);
             var NewOrder = new AddOrder();
             NewOrder.Name = orderRequest.Name;
 			NewOrder.ShipmentDate = orderRequest.ShipmentDate;
@@ -93,10 +92,10 @@ namespace OrderService.Controllers
 		public async Task<IActionResult> Delete(int id)
 		{
 			await _orderRepository.DeleteAsync(id);
-			//var DeleteOrder = new DeleteOrder();
-			//DeleteOrder.Id = Data.Id;
-			//await _publishEndpoint.Publish(DeleteOrder);
-			return Ok();
+            var DeleteOrder = new DeleteOrder();
+            DeleteOrder.Id = id;
+            await _publishEndpoint.Publish(DeleteOrder);
+            return Ok();
 		}
 	}
 }

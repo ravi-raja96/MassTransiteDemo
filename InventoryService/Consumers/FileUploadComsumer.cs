@@ -13,9 +13,6 @@ namespace InventoryService.Comsumers
         {
             var FilePath = "/Users/ravirajaparuchuri/Desktop/"+context.Message.FileName;
             await File.WriteAllBytesAsync(FilePath, context.Message.FileByte);
-            //var Result =context.Message;
-            //Console.WriteLine(Result);
-            //return Task.CompletedTask;
         }
     }
 }

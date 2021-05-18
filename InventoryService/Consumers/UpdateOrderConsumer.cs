@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using InventoryService.Context;
 using InventoryService.Entity;
+using InventoryService.Repositories;
 using MassTransit;
 using Model;
 
@@ -10,26 +12,27 @@ namespace InventoryService.Comsumers
 {
     public class UpdateOrderConsumer : IConsumer<UpdateOrder>
     {
-        private readonly InventoryServiceDbContext _inventoryServiceDbContext;
+        private readonly IBaseRepository<Order> _baseRepository;
+        private readonly IMapper _mapper;
 
-        public UpdateOrderConsumer(InventoryServiceDbContext inventoryServiceDbContext)
+        public UpdateOrderConsumer(IBaseRepository<Order> baseRepository, IMapper mapper)
         {
-            _inventoryServiceDbContext = inventoryServiceDbContext;
+            _baseRepository = baseRepository;
+            _mapper = mapper;
         }
 
         public async Task Consume(ConsumeContext<UpdateOrder> context)
         {
-            //var order = new Order();
-            //order.Name=
-         var Data = _inventoryServiceDbContext.Orders.FirstOrDefault(x => x.Id == context.Message.Id);
-            if (Data == null)
+
+            var orders = await _baseRepository.GetOrderById(context.Message.Id);
+            if (orders == null)
             {
-                return ;
-                //Console.WriteLine("null value");
+                return;
             }
-            Data.Name = context.Message.Name;
-             _inventoryServiceDbContext.Orders.Update(Data);
-            await _inventoryServiceDbContext.SaveChangesAsync();
+            orders= _mapper.Map<Order>(context.Message);
+            //orders.Name = context.Message.Name;
+            //orders.ShipmentDate = context.Message.ShipmentDate;
+            await _baseRepository.UpdateOrderAsync(orders);
 
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AutoMapper;
 using InventoryService.Context;
 using InventoryService.Entity;
 using InventoryService.Repositories;
@@ -12,20 +13,22 @@ namespace InventoryService.Comsumers
     public class AddOrderConsumer : IConsumer<AddOrder>
     {
         private readonly IBaseRepository<Order> _baseRepository;
-
-        public AddOrderConsumer(IBaseRepository<Order> baseRepository)
+        private readonly IMapper _mapper;
+        public AddOrderConsumer(IBaseRepository<Order> baseRepository, IMapper mapper)
         {
             _baseRepository = baseRepository;
+            _mapper = mapper;
         }
 
         public async Task Consume(ConsumeContext<AddOrder> context)
         {
-            var order = new Order();
-            order.Name = context.Message.Name;
-            order.ShipmentDate = context.Message.ShipmentDate;
-            await _baseRepository.AddAsync(order);
-            //await _inventoryServiceDbContext.Orders.AddAsync(order);
-            //await _inventoryServiceDbContext.SaveChangesAsync();
+           // var order = new Order();
+
+            var orders = _mapper.Map<Order>(context.Message);
+            //order.Name = context.Message.Name;
+            //order.ShipmentDate = context.Message.ShipmentDate;
+
+            await _baseRepository.AddAsync(orders);
         }
     }
 }

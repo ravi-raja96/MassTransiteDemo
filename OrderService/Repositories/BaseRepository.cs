@@ -45,6 +45,7 @@ namespace OrderService.Repositories
 			_context.Set<T>().Update(entity);
 			await _context.SaveChangesAsync();
 		}
+
 		public IEnumerable<T> FindWithSpecificationPattern(ISpecification<T> specification = null)
 		{
 			IQueryable<T> data = _context.Set<T>().AsQueryable();

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using InventoryService.Context;
+using InventoryService.Entity;
+using InventoryService.Repositories;
 using MassTransit;
 using Model;
 
@@ -9,18 +12,18 @@ namespace InventoryService.Comsumers
 {
     public class DeleteOrderConsumer : IConsumer<DeleteOrder>
     {
-        private readonly InventoryServiceDbContext _inventoryServiceDbContext;
+        private readonly IBaseRepository<Order> _baseRepository;
+      
 
-        public DeleteOrderConsumer(InventoryServiceDbContext inventoryServiceDbContext)
+        public DeleteOrderConsumer(IBaseRepository<Order> baseRepository)
         {
-            _inventoryServiceDbContext = inventoryServiceDbContext;
+            _baseRepository = baseRepository;
+           
         }
 
         public async Task Consume(ConsumeContext<DeleteOrder> context)
         {
-            var Data = _inventoryServiceDbContext.Orders.FirstOrDefault(x => x.Id == context.Message.Id);
-            _inventoryServiceDbContext.Orders.Remove(Data);
-            await _inventoryServiceDbContext.SaveChangesAsync();
+            await _baseRepository.DeleteOrderAsync(context.Message.Id);
         }
     }
 }

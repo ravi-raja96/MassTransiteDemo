@@ -4,6 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'RunAll' " />
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     <PackageReference Include="MassTransit" Version="7.1.8" />
@@ -20,6 +21,10 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.6" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.6" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="AutoMapper.Collection" Version="7.0.1" />
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.ExpressionMapping" Version="4.1.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +32,7 @@
     <Folder Include="Context\" />
     <Folder Include="Entity\" />
     <Folder Include="Repositories\" />
+    <Folder Include="Specifications\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Orders\Model.csproj">
